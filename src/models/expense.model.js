@@ -34,6 +34,14 @@ const expenseSchema = new mongoose.Schema({
 
 }, {
     timestamps: true,
+    toJSON: {
+        virtuals: true,
+        transform: function (doc, ret) {
+            ret.id = ret._id;   // add new field "id"
+            delete ret._id;     // remove _id
+            delete ret.__v;     // remove version key
+        }
+    }
 });
 
 const Expense = mongoose.model("Expense", expenseSchema);
