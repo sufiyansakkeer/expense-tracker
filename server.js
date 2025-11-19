@@ -2,24 +2,34 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './src/config/db.js';
-
+import authRoutes from './src/routes/auth.routes.js';
+import expenseRoutes from './src/routes/expense.routes.js';
 
 dotenv.config();
 
+// Connect to MongoDB
 connectDB();
 
 const app = express();
 
+// Body parser middleware
 app.use(express.json());
 
-app.get("/", (req, res) => {
-    res.send("Hello World");
+// Routes
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/expenses", expenseRoutes);
 
+// Default route
+app.get("/", (req, res) => {
+    res.send("Hmmmmm......running smooothly........");
 });
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT,)
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
+
 
 
 
