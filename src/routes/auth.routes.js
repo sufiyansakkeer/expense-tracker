@@ -20,7 +20,7 @@ router.post("/register", async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newUser = new User.create({
+        const newUser = await User.create({
             name,
             email,
             password: hashedPassword,
@@ -40,6 +40,7 @@ router.post("/register", async (req, res) => {
 
 router.post('/login', async (req, res) => {
     try {
+        console.log(req.body);
         const { email, password } = req.body;
         if (!email || !password) {
             return res.status(400).json({ message: "All fields are required" });
@@ -54,7 +55,7 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ message: "Invalid email or password" });
         }
 
-        const token = jwt.sign(
+        const token = await jwt.sign(
             { userId: user._id },
             process.env.JWT_SECRET,
             { expiresIn: "7d" }

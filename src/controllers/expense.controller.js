@@ -3,10 +3,27 @@ import Expense from "../models/expense.model.js";
 export const createExpense = async (req, res) => {
 
     try {
+        if (!req.body || Object.keys(req.body).length === 0) {
+            console.log(req.body);
+            return res.status(400).json({ message: "All fields are required" })
+        }
+        console.log("User from the token", req.user);
+
         const { title, amount, category, type, description, date } = req.body;
         if (!title || !amount || !category || !type || !date) {
             return res.status(400).json({ message: "All fields are required" })
         }
+        if (typeof title !== "string" || typeof amount !== "number" || typeof category !== "string" || typeof type !== "string") {
+            return res.status(400).json({ message: "Invalid data type" });
+        }
+
+        if (!["income", "expense"].includes(type)) {
+            return res.status(400).json({ message: "Type must be either 'income' or 'expense" });
+        }
+        if (isNaN(Date.parse(date))) {
+            return res.status(400).json({ message: "Invalid date format" });
+        }
+
 
         const expense = await Expense.create({
             user: req.user._id,
@@ -18,7 +35,7 @@ export const createExpense = async (req, res) => {
             date,
         })
 
-        return res.status(201).json({ message: "Expense created successfully", expense });
+        return res.status(201).json({ message: "Expense created successfully", });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: "Server error" });

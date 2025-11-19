@@ -2,7 +2,7 @@ import express from 'express';
 
 import { getAllExpenses, createExpense, getExpenseById, updateExpense, deleteExpense } from '../controllers/expense.controller.js';
 
-import authMiddleware from '../middleware/auth.middleware.js';
+import { authMiddleware } from '../middleware/auth.middleware.js';
 
 
 
