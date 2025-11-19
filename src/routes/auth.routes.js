@@ -18,12 +18,18 @@ router.post("/register", async (req, res) => {
             return res.status(400).json({ message: "User already exists" });
         }
 
+        const existingPhone = await User.findOne({ phone });
+        if (existingPhone) {
+            return res.status(400).json({ message: "Phone number already exists" });
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = await User.create({
             name,
             email,
             password: hashedPassword,
+            phone,
 
 
         });
