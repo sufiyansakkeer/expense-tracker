@@ -2,6 +2,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './src/config/db.js';
+import authRoutes from './src/routes/auth.routes.js';
+import expenseRoutes from './src/routes/expense.routes.js';
 
 
 dotenv.config();
@@ -11,15 +13,17 @@ connectDB();
 const app = express();
 
 app.use(express.json());
+app.use("/api/auth", authRoutes);
+app.use("/api/expenses", expenseRoutes);
 
 app.get("/", (req, res) => {
-    res.send("Hello World");
+    res.send("Hmmmmm......running smooothly........");
 
 });
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT,)
+app.listen(PORT,);
 
 
 
