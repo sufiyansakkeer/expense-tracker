@@ -5,12 +5,19 @@ import connectDB from './src/config/db.js';
 import authRoutes from './src/routes/auth.routes.js';
 import expenseRoutes from './src/routes/expense.routes.js';
 
-dotenv.config();
+dotenv.config(
+    {
+        path: `.env.${process.env.NODE_ENV}`
+    }
+);
+
+console.log("Loaded ENV:", process.env.NODE_ENV);
 
 // Connect to MongoDB
 connectDB();
 
 const app = express();
+
 
 // Body parser middleware
 app.use(express.json());
@@ -21,7 +28,7 @@ app.use("/api/v1/expenses", expenseRoutes);
 
 // Default route
 app.get("/", (req, res) => {
-    res.send("Hmmmmm......running smooothly........");
+    res.send("");
 });
 
 const PORT = process.env.PORT || 3000;
@@ -63,6 +70,4 @@ app.listen(PORT, () => {
 // *   Install `dotenv` if you haven't already: `npm install dotenv`.
 // *   You'll need to create your route files (e.g., `routes/expenses.js`) and define your Mongoose schemas/models.
 
-// <!--
-// [PROMPT_SUGGESTION]Can you provide an example of an expense model and a basic expense route for this project?[/PROMPT_SUGGESTION]
-// [PROMPT_SUGGESTION]How can I secure this Express application?[/PROMPT_SUGGESTION]
+

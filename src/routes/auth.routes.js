@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
-router.post("/register", async (req, res) => {
+router.post("/register", async (req, res, next) => {
 
     try {
         const { name, email, password, phone } = req.body;
@@ -33,20 +33,17 @@ router.post("/register", async (req, res) => {
 
 
         });
-        await newUser.save();
         res.status(201).json({ message: "User created successfully" });
 
     } catch (error) {
-        console.log(error,);
-        res.status(500).json({ error: error.message });
+        next(error);
 
     }
 
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', async (req, res, next) => {
     try {
-        console.log(req.body);
         const { email, password } = req.body;
         if (!email || !password) {
             return res.status(400).json({ message: "All fields are required" });
@@ -66,10 +63,10 @@ router.post('/login', async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: "7d" }
         );
-        res.status(200).json({ message: "Login successful", token });
+        return res.status(200).json({ message: "Login successful", token });
 
     } catch (error) {
-        return res.status(500).json({ error: error.message });
+        next(error);
     }
 });
 

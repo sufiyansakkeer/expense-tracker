@@ -1,7 +1,7 @@
 import Expense from "../models/expense.model.js";
 
 // ------------------------------ CREATE ------------------------------
-export const createExpense = async (req, res) => {
+export const createExpense = async (req, res, next) => {
     try {
         if (!req.body || Object.keys(req.body).length === 0) {
             return res.status(400).json({ message: "All fields are required" });
@@ -41,14 +41,13 @@ export const createExpense = async (req, res) => {
 
         return res.status(201).json({ message: "Expense created successfully" });
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: "Server error" });
+        next(error);
     }
 };
 
 
 // ------------------------------ GET ALL ------------------------------
-export const getAllExpenses = async (req, res) => {
+export const getAllExpenses = async (req, res, next) => {
     try {
         const expenses = await Expense.find({
             user: req.user._id
@@ -56,14 +55,13 @@ export const getAllExpenses = async (req, res) => {
 
         return res.status(200).json({ message: "Success", data: expenses });
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: "Server error" });
+        next(error);
     }
 };
 
 
 // ------------------------------ GET BY ID ------------------------------
-export const getExpenseById = async (req, res) => {
+export const getExpenseById = async (req, res, next) => {
     try {
         // Validate ID
         if (!req.params.id || req.params.id.length !== 24) {
@@ -81,14 +79,13 @@ export const getExpenseById = async (req, res) => {
 
         return res.status(200).json({ message: "Success", data: expense });
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: "Server error" });
+        next(error);
     }
 };
 
 
 // ------------------------------ UPDATE ------------------------------
-export const updateExpense = async (req, res) => {
+export const updateExpense = async (req, res, next) => {
     try {
         // Validate ID
         if (!req.params.id || req.params.id.length !== 24) {
@@ -137,14 +134,13 @@ export const updateExpense = async (req, res) => {
         return res.status(200).json({ message: "Expense updated successfully", });
 
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: "Server error" });
+        next(error);
     }
 };
 
 
 // ------------------------------ DELETE ------------------------------
-export const deleteExpense = async (req, res) => {
+export const deleteExpense = async (req, res, next) => {
     try {
         // Validate ID
         if (!req.params.id || req.params.id.length !== 24) {
@@ -162,7 +158,6 @@ export const deleteExpense = async (req, res) => {
 
         return res.status(200).json({ message: "Expense deleted successfully" });
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: "Server error" });
+        next(error);
     }
 };
