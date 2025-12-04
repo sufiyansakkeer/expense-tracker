@@ -3,31 +3,6 @@ import Expense from "../models/expense.model.js";
 // ------------------------------ CREATE ------------------------------
 export const createExpense = async (req, res, next) => {
     try {
-        if (!req.body || Object.keys(req.body).length === 0) {
-            return res.status(400).json({ message: "All fields are required" });
-        }
-
-        const { title, amount, category, type, description, date } = req.body;
-
-        // Basic validations
-        if (!title || !amount || !category || !type || !date) {
-            return res.status(400).json({ message: "All fields are required" });
-        }
-
-        // Type validations
-        if (typeof title !== "string" || typeof amount !== "number" || typeof category !== "string" || typeof type !== "string") {
-            return res.status(400).json({ message: "Invalid data type" });
-        }
-
-        // Allowed type
-        if (!["income", "expense"].includes(type)) {
-            return res.status(400).json({ message: "Type must be either 'income' or 'expense'" });
-        }
-
-        // Valid date
-        if (isNaN(Date.parse(date))) {
-            return res.status(400).json({ message: "Invalid date format" });
-        }
 
         await Expense.create({
             user: req.user._id,
@@ -63,10 +38,6 @@ export const getAllExpenses = async (req, res, next) => {
 // ------------------------------ GET BY ID ------------------------------
 export const getExpenseById = async (req, res, next) => {
     try {
-        // Validate ID
-        if (!req.params.id || req.params.id.length !== 24) {
-            return res.status(400).json({ message: "Invalid expense ID" });
-        }
 
         const expense = await Expense.findOne({
             _id: req.params.id,
@@ -87,32 +58,7 @@ export const getExpenseById = async (req, res, next) => {
 // ------------------------------ UPDATE ------------------------------
 export const updateExpense = async (req, res, next) => {
     try {
-        // Validate ID
-        if (!req.params.id || req.params.id.length !== 24) {
-            return res.status(400).json({ message: "Invalid expense ID" });
-        }
-
         const { title, amount, category, type, description, date } = req.body;
-
-        // Field validations
-        if (!title || !amount || !category || !type || !date) {
-            return res.status(400).json({ message: "All fields are required" });
-        }
-
-        // Type validations
-        if (typeof title !== "string" || typeof amount !== "number" || typeof category !== "string" || typeof type !== "string") {
-            return res.status(400).json({ message: "Invalid data type" });
-        }
-
-        // Allowed type
-        if (!["income", "expense"].includes(type)) {
-            return res.status(400).json({ message: "Type must be either 'income' or 'expense'" });
-        }
-
-        // Valid date
-        if (isNaN(Date.parse(date))) {
-            return res.status(400).json({ message: "Invalid date format" });
-        }
 
         const expense = await Expense.findOneAndUpdate(
             { _id: req.params.id, user: req.user._id },
@@ -142,10 +88,6 @@ export const updateExpense = async (req, res, next) => {
 // ------------------------------ DELETE ------------------------------
 export const deleteExpense = async (req, res, next) => {
     try {
-        // Validate ID
-        if (!req.params.id || req.params.id.length !== 24) {
-            return res.status(400).json({ message: "Invalid expense ID" });
-        }
 
         const expense = await Expense.findOneAndDelete({
             _id: req.params.id,
