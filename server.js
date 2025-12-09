@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import connectDB from './src/config/db.js';
 import authRoutes from './src/routes/auth.routes.js';
 import expenseRoutes from './src/routes/expense.routes.js';
+import categoryRoutes from './src/routes/category.routes.js';
 
 dotenv.config(
     {
@@ -25,6 +26,7 @@ app.use(express.json());
 // Routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/expenses", expenseRoutes);
+app.use("/api/v1/categories", categoryRoutes);
 
 // Default route
 app.get("/", (req, res) => {

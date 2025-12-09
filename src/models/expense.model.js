@@ -15,14 +15,11 @@ const expenseSchema = new mongoose.Schema({
         required: true,
     },
     category: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
         required: true,
     },
-    type: {
-        type: String,
-        enum: ["income", "expense"],
-        required: true,
-    },
+
     description: {
         type: String,
         required: "",

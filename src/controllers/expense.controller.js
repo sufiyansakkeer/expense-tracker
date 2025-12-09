@@ -3,6 +3,8 @@ import Expense from "../models/expense.model.js";
 // ------------------------------ CREATE ------------------------------
 export const createExpense = async (req, res, next) => {
     try {
+        const { title, amount, category, type, description, date } = req.body;  
+        
 
         await Expense.create({
             user: req.user._id,
